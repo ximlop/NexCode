@@ -4,5 +4,17 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Ajustes.unity
+    guid: 60284889184dbf1499f9aee6234b83a1
+  - enabled: 1
+    path: Assets/Scenes/Desafio.unity
+    guid: b401a7c53c65d07409aa556a3f91f3a8
+  - enabled: 1
+    path: Assets/Scenes/Progreso.unity
+    guid: 20b2c6d722a2c804c9754913cdbc25a7
+  - enabled: 1
+    path: Assets/Scenes/Diario.unity
+    guid: acdcdb99ea7ce664d9843382269bfc0c
   m_configObjects: {}
