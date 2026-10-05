@@ -294,7 +294,7 @@ public class ProgressUIController : MonoBehaviour
         {
             feedbackText.color = new Color32(180, 45, 45, 255);
             feedbackText.text =
-                "Todavía no. Busca la instrucción usada para mostrar texto.";
+                "Respuesta incorrecta. Intenta de nuevo.";
             return;
         }
 
