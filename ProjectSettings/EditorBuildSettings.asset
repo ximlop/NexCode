@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Diario.unity
     guid: acdcdb99ea7ce664d9843382269bfc0c
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: 4a250493f5e98b144800bdd7a47e2593
   m_configObjects: {}
