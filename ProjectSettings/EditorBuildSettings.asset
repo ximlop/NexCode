@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tutorial.unity
     guid: 4a250493f5e98b144800bdd7a47e2593
+  - enabled: 1
+    path: Assets/Scenes/Logros.unity
+    guid: 329f3bff1fe0ffd41889e80b87c35c67
   m_configObjects: {}

@@ -76,6 +76,11 @@ public class DailyUIController : MonoBehaviour
         SceneManager.LoadScene("Progreso");
     }
 
+    public void OpenLogrosScene()
+    {
+        SceneManager.LoadScene("Logros");
+    }
+
     public void OpenReviewScene()
     {
         SceneManager.LoadScene("Desafio");

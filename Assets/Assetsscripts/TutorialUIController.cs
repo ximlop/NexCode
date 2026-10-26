@@ -25,6 +25,11 @@ public class TutorialUIController : MonoBehaviour
         SceneManager.LoadScene("Desafio");
     }
 
+    public void OpenLogrosScene()
+    {
+        SceneManager.LoadScene("Logros");
+    }
+
     public void FinishTutorial()
     {
 
