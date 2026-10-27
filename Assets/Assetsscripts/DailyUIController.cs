@@ -28,7 +28,7 @@ public class DailyUIController : MonoBehaviour
             dailyProgressText, 
             dailyProgressBar, 
             dailyClaimButton, 
-            0, 1
+            0, 2
             );
 
         ShowMission(
