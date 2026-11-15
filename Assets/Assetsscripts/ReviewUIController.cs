@@ -36,8 +36,8 @@ public class ReviewUIController : MonoBehaviour
         SceneManager.LoadScene("Progreso");
     }
 
-    public void OpenLogrosScene()
+    public void OpenDailyScene()
     {
-        SceneManager.LoadScene("Logros");
+        SceneManager.LoadScene("Diario");
     }
 }
