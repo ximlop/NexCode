@@ -28,7 +28,22 @@ public class ProgressUIController : MonoBehaviour
     [SerializeField] private TMP_Text questionText;
     [SerializeField] private TMP_Text feedbackText;
     [SerializeField] private Button[] answerButtons;
-    [SerializeField] private TMP_Text[] answerTexts;
+
+    [Header("Sprites de respuestas Python")]
+    [SerializeField] private Sprite[] pythonAnswerSprites;
+
+    [Header("Sprites de respuestas Java")]
+    [SerializeField] private Sprite[] javaAnswerSprites;
+
+    [Header("Colores de respuestas")]
+    [SerializeField] private Color answerDefaultColor =
+    new Color32(255, 255, 255, 255);
+
+    [SerializeField] private Color correctAnswerColor =
+    new Color32(130, 235, 155, 255);
+
+    [SerializeField] private Color otherAnswerColor =
+    new Color32(45, 55, 65, 255);
 
     private string activeLessonPath;
     private int activeLessonLevel;
@@ -197,11 +212,7 @@ public class ProgressUIController : MonoBehaviour
             return;
         }
 
-        foreach (Button button in answerButtons)
-        {
-            button.gameObject.SetActive(true);
-            button.interactable = true;
-        }
+        ResetAnswerButtonColors();
 
         feedbackText.text = "Selecciona una respuesta.";
         feedbackText.color = Color.gray;
@@ -211,9 +222,7 @@ public class ProgressUIController : MonoBehaviour
             questionText.text =
                 "¿Qué instrucción muestra Hola en la consola de Python?";
 
-            answerTexts[0].text = "print(\"Hola\")";
-            answerTexts[1].text = "input(\"Hola\")";
-            answerTexts[2].text = "len(\"Hola\")";
+            SetAnswerSprites(pythonAnswerSprites);
 
             correctAnswerIndex = 0;
         }
@@ -222,9 +231,7 @@ public class ProgressUIController : MonoBehaviour
             questionText.text =
                 "¿Qué instrucción muestra Hola en la consola de Java?";
 
-            answerTexts[0].text = "print(\"Hola\");";
-            answerTexts[1].text = "System.out.println(\"Hola\");";
-            answerTexts[2].text = "Console.WriteLine(\"Hola\");";
+            SetAnswerSprites(javaAnswerSprites);
 
             correctAnswerIndex = 1;
         }
@@ -305,10 +312,7 @@ public class ProgressUIController : MonoBehaviour
 
         lessonAnswered = true;
 
-        foreach (Button button in answerButtons)
-        {
-            button.interactable = false;
-        }
+        ShowCorrectAnswerColors();
 
         string progressKey = GetProgressKey(activeLessonPath);
         bool unlocksNextLevel =
@@ -323,6 +327,91 @@ public class ProgressUIController : MonoBehaviour
             : "¡Correcto! Completaste el repaso.";
     }
 
+    private void ResetAnswerButtonColors()
+    {
+        foreach (Button button in answerButtons)
+        {
+            button.gameObject.SetActive(true);
+            button.interactable = true;
+            button.image.color = Color.white;
+
+            ColorBlock colors = button.colors;
+
+            colors.normalColor = answerDefaultColor;
+            colors.highlightedColor = answerDefaultColor;
+            colors.selectedColor = answerDefaultColor;
+            colors.pressedColor = answerDefaultColor;
+            colors.disabledColor = answerDefaultColor;
+            colors.colorMultiplier = 1f;
+
+            button.colors = colors;
+        }
+    }
+
+    private void ShowCorrectAnswerColors()
+    {
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            Button button = answerButtons[i];
+
+            Color resultColor;
+
+            if (i == correctAnswerIndex)
+            {
+                resultColor = correctAnswerColor;
+            }
+            else
+            {
+                resultColor = otherAnswerColor;
+            }
+
+            button.image.color = Color.white;
+
+            ColorBlock colors = button.colors;
+
+            colors.normalColor = resultColor;
+            colors.highlightedColor = resultColor;
+            colors.selectedColor = resultColor;
+            colors.pressedColor = resultColor;
+            colors.disabledColor = resultColor;
+            colors.colorMultiplier = 1f;
+
+            button.colors = colors;
+            button.interactable = false;
+        }
+    }
+
+    private void SetAnswerSprites(Sprite[] answerSprites)
+    {
+        if (answerSprites == null ||
+            answerSprites.Length != answerButtons.Length)
+        {
+            Debug.LogError(
+                "La cantidad de sprites debe ser igual "
+                + "a la cantidad de botones de respuesta."
+            );
+
+            return;
+        }
+
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            Image buttonImage = answerButtons[i].image;
+
+            if (buttonImage == null)
+            {
+                Debug.LogError(
+                    "El botón de respuesta " + i
+                    + " no tiene un componente Image."
+                );
+
+                continue;
+            }
+
+            buttonImage.sprite = answerSprites[i];
+            buttonImage.preserveAspect = true;
+        }
+    }
     public void CloseLessonPopup()
     {
         lessonPopupLayer.SetActive(false);
