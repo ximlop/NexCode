@@ -327,6 +327,26 @@ app.post(
                 });
             }
 
+            const userId = new ObjectId(req.userId);
+
+            const existingUser =
+                await usersCollection.findOne({
+                    _id: userId
+                });
+
+            if (!existingUser) {
+                return res.status(404).json({
+                    message: "Usuario no encontrado."
+                });
+            }
+
+            const completedLevels =
+                existingUser.progress?.[learningPath]
+                    ?.completedLevels || [];
+
+            const firstCompletion =
+                !completedLevels.includes(levelNumber);
+
             const nextLevel =
                 Math.min(levelNumber + 1, 6);
 
@@ -336,36 +356,51 @@ app.post(
             const highestField =
                 `progress.${learningPath}.highestUnlockedLevel`;
 
-            await usersCollection.updateOne(
-                { _id: new ObjectId(req.userId) },
-                {
-                    $addToSet: {
-                        [completedField]: levelNumber
-                    },
-                    $max: {
-                        [highestField]: nextLevel
-                    },
-                    $set: {
-                        updatedAt: new Date()
-                    }
+            const update = {
+                $addToSet: {
+                    [completedField]: levelNumber
+                },
+                $max: {
+                    [highestField]: nextLevel
+                },
+                $set: {
+                    updatedAt: new Date()
                 }
+            };
+
+            if (firstCompletion) {
+                update.$inc = {
+                    points: 10
+                };
+            }
+
+            await usersCollection.updateOne(
+                { _id: userId },
+                update
             );
 
-            const user =
+            const updatedUser =
                 await usersCollection.findOne({
-                    _id: new ObjectId(req.userId)
+                    _id: userId
                 });
 
             return res.json({
-                message: "Progreso guardado.",
-                user: publicUser(user)
+                message: firstCompletion
+                    ? "Nivel completado. Ganaste 10 puntos."
+                    : "Nivel repasado correctamente.",
+
+                pointsAwarded:
+                    firstCompletion ? 10 : 0,
+
+                user: publicUser(updatedUser)
             });
         }
         catch (error) {
             console.error(error);
 
             return res.status(500).json({
-                message: "No se pudo guardar el progreso."
+                message:
+                    "No se pudo guardar el progreso."
             });
         }
     }
@@ -415,6 +450,148 @@ app.post(
 
             return res.status(500).json({
                 message: "No se pudo registrar el error."
+            });
+        }
+    }
+);
+
+app.patch(
+    "/api/user/password",
+    authenticate,
+    async (req, res) => {
+        try {
+            const currentPassword =
+                String(req.body.currentPassword || "");
+
+            const newPassword =
+                String(req.body.newPassword || "");
+
+            if (!currentPassword || newPassword.length < 8) {
+                return res.status(400).json({
+                    message:
+                        "La nueva contraseña debe tener al menos 8 caracteres."
+                });
+            }
+
+            if (currentPassword === newPassword) {
+                return res.status(400).json({
+                    message:
+                        "La nueva contraseña debe ser diferente."
+                });
+            }
+
+            const userId = new ObjectId(req.userId);
+
+            const user = await usersCollection.findOne({
+                _id: userId
+            });
+
+            if (!user) {
+                return res.status(404).json({
+                    message: "Usuario no encontrado."
+                });
+            }
+
+            const validPassword = await bcrypt.compare(
+                currentPassword,
+                user.passwordHash
+            );
+
+            if (!validPassword) {
+                return res.status(401).json({
+                    message:
+                        "La contraseña actual es incorrecta."
+                });
+            }
+
+            const passwordHash = await bcrypt.hash(
+                newPassword,
+                12
+            );
+
+            await usersCollection.updateOne(
+                { _id: userId },
+                {
+                    $set: {
+                        passwordHash,
+                        updatedAt: new Date()
+                    }
+                }
+            );
+
+            return res.json({
+                message:
+                    "Contraseña actualizada correctamente."
+            });
+        }
+        catch (error) {
+            console.error(error);
+
+            return res.status(500).json({
+                message:
+                    "No se pudo cambiar la contraseña."
+            });
+        }
+    }
+);
+
+app.post(
+    "/api/user/reset-progress",
+    authenticate,
+    async (req, res) => {
+        try {
+            const userId =
+                new ObjectId(req.userId);
+
+            const result =
+                await usersCollection.updateOne(
+                    { _id: userId },
+                    {
+                        $set: {
+                            points: 0,
+
+                            "settings.learningPath": "",
+
+                            progress: {
+                                Python: {
+                                    highestUnlockedLevel: 1,
+                                    completedLevels: []
+                                },
+                                Java: {
+                                    highestUnlockedLevel: 1,
+                                    completedLevels: []
+                                }
+                            },
+
+                            mistakes: {
+                                Python: {},
+                                Java: {}
+                            },
+
+                            missions: [],
+                            achievements: [],
+                            updatedAt: new Date()
+                        }
+                    }
+                );
+
+            if (result.matchedCount === 0) {
+                return res.status(404).json({
+                    message: "Usuario no encontrado."
+                });
+            }
+
+            return res.json({
+                message:
+                    "El progreso fue restablecido."
+            });
+        }
+        catch (error) {
+            console.error(error);
+
+            return res.status(500).json({
+                message:
+                    "No se pudo restablecer el progreso."
             });
         }
     }

@@ -45,6 +45,8 @@ public class ProgressUIController : MonoBehaviour
     [SerializeField] private Color otherAnswerColor =
     new Color32(45, 55, 65, 255);
 
+    [SerializeField] private Color availableColor =
+    new Color32(65, 145, 230, 255);
     private string activeLessonPath;
     private int activeLessonLevel;
     private int correctAnswerIndex;
@@ -81,13 +83,20 @@ public class ProgressUIController : MonoBehaviour
 
     private void SavePath(string selectedPath)
     {
-        PlayerPrefs.SetString(LearningPathKey, selectedPath);
+        PlayerPrefs.SetString(
+            LearningPathKey,
+            selectedPath
+        );
 
-        string progressKey = GetProgressKey(selectedPath);
+        string progressKey =
+            GetProgressKey(selectedPath);
 
         if (!PlayerPrefs.HasKey(progressKey))
         {
-            PlayerPrefs.SetInt(progressKey, 1);
+            PlayerPrefs.SetInt(
+                progressKey,
+                1
+            );
         }
 
         PlayerPrefs.Save();
@@ -95,8 +104,31 @@ public class ProgressUIController : MonoBehaviour
         UpdatePathText();
         RefreshProgressMap();
         pathPopupLayer.SetActive(false);
-    }
 
+        if (
+            ApiClient.Instance != null &&
+            ApiClient.Instance.HasSession()
+        )
+        {
+            ApiClient.Instance.SaveLearningPath(
+                selectedPath,
+                (success, message) =>
+                {
+                    if (success)
+                    {
+                        Debug.Log(
+                            "Camino guardado en MongoDB: "
+                            + selectedPath
+                        );
+                    }
+                    else
+                    {
+                        Debug.LogWarning(message);
+                    }
+                }
+            );
+        }
+    }
     private void UpdatePathText()
     {
         string selectedPath =
@@ -123,17 +155,34 @@ public class ProgressUIController : MonoBehaviour
 
         for (int i = 0; i < levelButtons.Length; i++)
         {
-            bool isUnlocked = i < highestUnlockedLevel;
+            int levelNumber = i + 1;
+
+            bool isUnlocked =
+                levelNumber <= highestUnlockedLevel;
+
+            bool isCompleted =
+                PlayerPrefs.GetInt(
+                    "Completed_" +
+                    selectedPath +
+                    "_" +
+                    levelNumber,
+                    0
+                ) == 1;
+
+            Color stateColor = isCompleted
+                ? unlockedColor
+                : availableColor;
+
             Button button = levelButtons[i];
 
             ColorBlock colors = button.colors;
-            colors.normalColor = unlockedColor;
-            colors.highlightedColor = unlockedColor;
-            colors.selectedColor = unlockedColor;
-            colors.pressedColor = unlockedColor * 0.8f;
+            colors.normalColor = stateColor;
+            colors.highlightedColor = stateColor;
+            colors.selectedColor = stateColor;
+            colors.pressedColor = stateColor * 0.8f;
             colors.disabledColor = lockedColor;
-            button.colors = colors;
 
+            button.colors = colors;
             button.interactable = isUnlocked;
         }
 
@@ -265,9 +314,18 @@ public class ProgressUIController : MonoBehaviour
         if (nextLevel > currentHighest)
         {
             PlayerPrefs.SetInt(progressKey, nextLevel);
-            PlayerPrefs.Save();
+
         }
 
+        PlayerPrefs.SetInt(
+            "Completed_" +
+            activeLessonPath +
+            "_" +
+            completedLevel,
+            1
+        );
+
+        PlayerPrefs.Save();
         RefreshProgressMap();
     }
 
@@ -329,6 +387,28 @@ public class ProgressUIController : MonoBehaviour
             activeLessonLevel < levelButtons.Length;
 
         CompleteLevel(activeLessonLevel);
+
+        if (
+            ApiClient.Instance != null &&
+            ApiClient.Instance.HasSession()
+        )
+        {
+            ApiClient.Instance.SaveCompletedLevel(
+                activeLessonPath,
+                activeLessonLevel,
+                (success, message) =>
+                {
+                    if (success)
+                    {
+                        Debug.Log(message);
+                    }
+                    else
+                    {
+                        Debug.LogWarning(message);
+                    }
+                }
+            );
+        }
 
         feedbackText.color = new Color32(25, 130, 65, 255);
         feedbackText.text = unlocksNextLevel
@@ -453,6 +533,30 @@ public class ProgressUIController : MonoBehaviour
         );
 
         PlayerPrefs.Save();
+
+        if (
+            ApiClient.Instance != null &&
+            ApiClient.Instance.HasSession()
+        )
+        {
+            ApiClient.Instance.SaveMistake(
+                learningPath,
+                levelNumber,
+                (success, message) =>
+                {
+                    if (success)
+                    {
+                        Debug.Log(
+                            "Error guardado en MongoDB."
+                        );
+                    }
+                    else
+                    {
+                        Debug.LogWarning(message);
+                    }
+                }
+            );
+        }
 
         Debug.Log(
             "Error registrado: "
