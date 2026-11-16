@@ -304,9 +304,18 @@ public class ProgressUIController : MonoBehaviour
 
         if (answerIndex != correctAnswerIndex)
         {
-            feedbackText.color = new Color32(180, 45, 45, 255);
+            RegisterMistake(
+                activeLessonPath,
+                activeLessonLevel
+            );
+
+            feedbackText.color =
+                new Color32(180, 45, 45, 255);
+
             feedbackText.text =
-                "Respuesta incorrecta. Intenta de nuevo.";
+                "Respuesta incorrecta. "
+                + "Este nivel se agregó a Repaso.";
+
             return;
         }
 
@@ -418,6 +427,39 @@ public class ProgressUIController : MonoBehaviour
         activeLessonLevel = 0;
         activeLessonPath = "";
         lessonAnswered = false;
+    }
+
+    private string GetMistakeKey(string learningPath, int levelNumber)
+    {
+        return "Mistakes_" + learningPath + "_" + levelNumber;
+    }
+
+    private void RegisterMistake(string learningPath, int levelNumber)
+    {
+        if (string.IsNullOrEmpty(learningPath) || levelNumber < 1)
+        {
+            return;
+        }
+
+        string mistakeKey =
+            GetMistakeKey(learningPath, levelNumber);
+
+        int currentMistakes =
+        PlayerPrefs.GetInt(mistakeKey, 0);
+
+        PlayerPrefs.SetInt(
+            mistakeKey,
+            currentMistakes + 1
+        );
+
+        PlayerPrefs.Save();
+
+        Debug.Log(
+            "Error registrado: "
+            + learningPath
+            + ", nivel "
+            + levelNumber
+        );
     }
 
 }
