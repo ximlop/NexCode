@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Logros.unity
     guid: 329f3bff1fe0ffd41889e80b87c35c67
+  - enabled: 1
+    path: Assets/Scenes/Autenticacion.unity
+    guid: 18a93dc0026e6cd42b4c12b2c05360bc
   m_configObjects: {}
