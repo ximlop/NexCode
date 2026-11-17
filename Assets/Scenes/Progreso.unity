@@ -759,7 +759,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -230}
+  m_AnchoredPosition: {x: 0, y: -300}
   m_SizeDelta: {x: 760, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &182931256
@@ -982,7 +982,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -132, y: 408.8}
+  m_AnchoredPosition: {x: -132, y: 455.25}
   m_SizeDelta: {x: 520, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &437234660
@@ -1251,7 +1251,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -90}
+  m_AnchoredPosition: {x: 0, y: -165}
   m_SizeDelta: {x: 760, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &480775257
@@ -1827,7 +1827,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 50}
+  m_AnchoredPosition: {x: 0, y: -30}
   m_SizeDelta: {x: 760, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &837558337
@@ -2039,7 +2039,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 182adff6273bb344698df722f3df5601, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2755,8 +2755,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 238}
-  m_SizeDelta: {x: 780, y: 180}
+  m_AnchoredPosition: {x: 0, y: 221}
+  m_SizeDelta: {x: 780, y: 372.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1184484820
 MonoBehaviour:
@@ -2805,8 +2805,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38
-  m_fontSizeBase: 38
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4853,14 +4853,89 @@ MonoBehaviour:
   - {fileID: 837558337}
   - {fileID: 480775257}
   - {fileID: 182931256}
-  pythonAnswerSprites:
-  - {fileID: 21300000, guid: b18cc456a24baa64088e75aa67ea7cb7, type: 3}
-  - {fileID: 21300000, guid: e6933ffc4327226498675d8100eabcd2, type: 3}
-  - {fileID: 21300000, guid: e1d4af0d976270b4699f993f8b9d7d94, type: 3}
-  javaAnswerSprites:
-  - {fileID: 21300000, guid: 0141f42cec1f2264db4c25b010a28fb0, type: 3}
-  - {fileID: 21300000, guid: fe2ea61e1e19c604e8393227c1f48c6c, type: 3}
-  - {fileID: 21300000, guid: 6816b4e7fcabc20489f107387401f12d, type: 3}
+  pythonLessons:
+  - question: "\xBFQu\xE9 instrucci\xF3n muestra Hola en la consola de Python?"
+    answerSprites:
+    - {fileID: 21300000, guid: b18cc456a24baa64088e75aa67ea7cb7, type: 3}
+    - {fileID: 21300000, guid: e6933ffc4327226498675d8100eabcd2, type: 3}
+    - {fileID: 21300000, guid: e1d4af0d976270b4699f993f8b9d7d94, type: 3}
+    correctAnswerIndex: 0
+  - question: "\xBFCu\xE1l instrucci\xF3n guarda el n\xFAmero 10 en una variable
+      llamada edad?"
+    answerSprites:
+    - {fileID: 21300000, guid: afe1b53b8ea7c1044bc8fd0d34c51638, type: 3}
+    - {fileID: 21300000, guid: cf7f1dfe21cbd304d8b563d407e6d774, type: 3}
+    - {fileID: 21300000, guid: bf37e993089c5d34c8c03044d71d364e, type: 3}
+    correctAnswerIndex: 1
+  - question: "\xBFQu\xE9 resultado muestra print(5 + 3 * 2)?"
+    answerSprites:
+    - {fileID: 21300000, guid: 9ca754ea2fc5d754d9a33344b9d03354, type: 3}
+    - {fileID: 21300000, guid: fd94ab7a921e64a479ff71bf32ee2c64, type: 3}
+    - {fileID: 21300000, guid: 586386c0d08e306449e963615ba62171, type: 3}
+    correctAnswerIndex: 1
+  - question: "Si edad = 18, \xBFqu\xE9 muestra este c\xF3digo?\n\nif edad >= 18:\n   
+      print('Mayor')\nelse:\n    print('Menor')"
+    answerSprites:
+    - {fileID: 21300000, guid: f2858c0a6a8c1784280c12446163252a, type: 3}
+    - {fileID: 21300000, guid: 6654b1f907cd6cb4b8e2e3fdfc6f6c49, type: 3}
+    - {fileID: 21300000, guid: d7529a1cb199a7749b5724761f0d708e, type: 3}
+    correctAnswerIndex: 2
+  - question: "\xBFCu\xE1ntas veces se imprime 'Hola'?\n\nfor i in range(3):\n   
+      print('Hola')"
+    answerSprites:
+    - {fileID: 21300000, guid: 5af41a2c8def2694ba1ccf32f9322f25, type: 3}
+    - {fileID: 21300000, guid: 8c68ca65d557b8841ad8616c933cb1c2, type: 3}
+    - {fileID: 21300000, guid: 73e8a4d9da5806e449c1e45fbd358f82, type: 3}
+    correctAnswerIndex: 0
+  - question: "\xBFQu\xE9 resultado muestra este c\xF3digo?\n\nsuma = 0\nfor i in
+      range(1, 5):\n    if i % 2 == 0:\n        suma += i\nprint(suma)"
+    answerSprites:
+    - {fileID: 21300000, guid: 87769437129a2bb4da0635d5971c94f7, type: 3}
+    - {fileID: 21300000, guid: 2e0602a91f2467e40b2b62d2b8b8d502, type: 3}
+    - {fileID: 21300000, guid: 1469bf07f19fa06498c8e5be3f4c0820, type: 3}
+    correctAnswerIndex: 1
+  javaLessons:
+  - question: "\xBFQu\xE9 instrucci\xF3n muestra Hola en la consola de Java?"
+    answerSprites:
+    - {fileID: 21300000, guid: 0141f42cec1f2264db4c25b010a28fb0, type: 3}
+    - {fileID: 21300000, guid: fe2ea61e1e19c604e8393227c1f48c6c, type: 3}
+    - {fileID: 21300000, guid: 6816b4e7fcabc20489f107387401f12d, type: 3}
+    correctAnswerIndex: 1
+  - question: "\xBFCu\xE1l instrucci\xF3n declara una variable entera llamada edad
+      con valor 20?"
+    answerSprites:
+    - {fileID: 21300000, guid: e28bf9203fcd0154eb3e64f4c121f669, type: 3}
+    - {fileID: 21300000, guid: bc956a0f026fd65449a3bacd7fcf4089, type: 3}
+    - {fileID: 21300000, guid: f55e050bf2e68114e84212838ee31029, type: 3}
+    correctAnswerIndex: 1
+  - question: "\xBFQu\xE9 resultado muestra System.out.println(10 % 3);?"
+    answerSprites:
+    - {fileID: 21300000, guid: ebb737616fff1f34db8a975926766f22, type: 3}
+    - {fileID: 21300000, guid: d911e50429347a2488f11f01281c4a14, type: 3}
+    - {fileID: 21300000, guid: a125e8dea4689634f85ca5105f4bab74, type: 3}
+    correctAnswerIndex: 1
+  - question: "Si int x = 7, \xBFqu\xE9 muestra este c\xF3digo?\n\nif (x > 10) {\n   
+      System.out.println(\"A\");\n} else {\n    System.out.println(\"B\");\n}"
+    answerSprites:
+    - {fileID: 21300000, guid: bb4ba4d506aec564fbd1bee1f1257a14, type: 3}
+    - {fileID: 21300000, guid: 1f8e86d8fb0b50848aff0dffe2e732e3, type: 3}
+    - {fileID: 21300000, guid: f7d1e1ff10792294080dc5c231d530e2, type: 3}
+    correctAnswerIndex: 2
+  - question: "\xBFCu\xE1ntas veces se imprime 'Hola'?\n\nfor (int i = 0; i < 4;
+      i++) {\n    System.out.println(\"Hola\");\n}"
+    answerSprites:
+    - {fileID: 21300000, guid: a6280c4143593364c9693272b128e900, type: 3}
+    - {fileID: 21300000, guid: 06d314034b0608c44b560589bb059af9, type: 3}
+    - {fileID: 21300000, guid: 5ac13efd82d595e42aa9600166d60ad5, type: 3}
+    correctAnswerIndex: 0
+  - question: "\xBFQu\xE9 valor se imprime al ejecutar este c\xF3digo?\n\nint suma
+      = 0;\nfor (int i = 1; i <= 5; i++) {\n    if (i % 2 != 0) {\n        suma +=
+      i;\n    }\n}\nSystem.out.println(suma);"
+    answerSprites:
+    - {fileID: 21300000, guid: f908c7d44ffdf4147bddeb86c73a5a75, type: 3}
+    - {fileID: 21300000, guid: 95153179f31716b4cbe104d401cf4454, type: 3}
+    - {fileID: 21300000, guid: a82176fd8a7a07c4dbeb3b33db160885, type: 3}
+    correctAnswerIndex: 2
   answerDefaultColor: {r: 1, g: 1, b: 1, a: 1}
   correctAnswerColor: {r: 0.50980395, g: 0.92156863, b: 0.60784316, a: 1}
   otherAnswerColor: {r: 0.1764706, g: 0.21568628, b: 0.25490198, a: 1}
@@ -5487,7 +5562,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -384.3}
+  m_AnchoredPosition: {x: 0, y: -471.2}
   m_SizeDelta: {x: 780, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2079964548

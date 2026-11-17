@@ -7,6 +7,18 @@ public class ProgressUIController : MonoBehaviour
 {
     private const string LearningPathKey = "LearningPath";
 
+    [System.Serializable]
+    public class LessonData
+    {
+        [TextArea]
+        public string question;
+
+        public Sprite[] answerSprites;
+
+        [Tooltip("Primera respuesta = 0, segunda = 1, tercera = 2")]
+        public int correctAnswerIndex;
+    }
+
     [Header("Selector de camino")]
     [SerializeField] private GameObject pathPopupLayer;
     [SerializeField] private TMP_Text currentPathText;
@@ -29,11 +41,11 @@ public class ProgressUIController : MonoBehaviour
     [SerializeField] private TMP_Text feedbackText;
     [SerializeField] private Button[] answerButtons;
 
-    [Header("Sprites de respuestas Python")]
-    [SerializeField] private Sprite[] pythonAnswerSprites;
+    [Header("Niveles de Python")]
+    [SerializeField] private LessonData[] pythonLessons;
 
-    [Header("Sprites de respuestas Java")]
-    [SerializeField] private Sprite[] javaAnswerSprites;
+    [Header("Niveles de Java")]
+    [SerializeField] private LessonData[] javaLessons;
 
     [Header("Colores de respuestas")]
     [SerializeField] private Color answerDefaultColor =
@@ -247,11 +259,71 @@ public class ProgressUIController : MonoBehaviour
 
         lessonPopupLayer.SetActive(true);
 
-        if (levelNumber != 1)
+        LessonData[] selectedLessons =
+            selectedPath == "Python"
+                ? pythonLessons
+                : javaLessons;
+
+        int lessonIndex = levelNumber - 1;
+
+        if (
+            selectedLessons == null ||
+            lessonIndex < 0 ||
+            lessonIndex >= selectedLessons.Length ||
+            selectedLessons[lessonIndex] == null
+        )
         {
             lessonAnswered = true;
-            questionText.text = "Este ejercicio todavía está en preparación.";
-            feedbackText.text = "Puedes cerrar la ventana y volver al mapa.";
+
+            questionText.text =
+                "Este ejercicio todavía está en preparación.";
+
+            feedbackText.text =
+                "Puedes cerrar la ventana y volver al mapa.";
+
+            foreach (Button button in answerButtons)
+            {
+                button.gameObject.SetActive(false);
+            }
+
+            return;
+        }
+
+        LessonData lesson = selectedLessons[lessonIndex];
+
+        if (
+            lesson.answerSprites == null ||
+            lesson.answerSprites.Length != answerButtons.Length
+        )
+        {
+            lessonAnswered = true;
+
+            questionText.text =
+                "Los sprites de este nivel no están configurados.";
+
+            feedbackText.text =
+                "Revisa el nivel en el Inspector.";
+
+            foreach (Button button in answerButtons)
+            {
+                button.gameObject.SetActive(false);
+            }
+
+            return;
+        }
+
+        if (
+            lesson.correctAnswerIndex < 0 ||
+            lesson.correctAnswerIndex >= answerButtons.Length
+        )
+        {
+            lessonAnswered = true;
+
+            questionText.text =
+                "La respuesta correcta no está configurada.";
+
+            feedbackText.text =
+                "Revisa Correct Answer Index.";
 
             foreach (Button button in answerButtons)
             {
@@ -263,27 +335,15 @@ public class ProgressUIController : MonoBehaviour
 
         ResetAnswerButtonColors();
 
+        questionText.text = lesson.question;
+
+        SetAnswerSprites(lesson.answerSprites);
+
+        correctAnswerIndex = lesson.correctAnswerIndex;
+
         feedbackText.text = "Selecciona una respuesta.";
         feedbackText.color = Color.gray;
 
-        if (selectedPath == "Python")
-        {
-            questionText.text =
-                "¿Qué instrucción muestra Hola en la consola de Python?";
-
-            SetAnswerSprites(pythonAnswerSprites);
-
-            correctAnswerIndex = 0;
-        }
-        else
-        {
-            questionText.text =
-                "¿Qué instrucción muestra Hola en la consola de Java?";
-
-            SetAnswerSprites(javaAnswerSprites);
-
-            correctAnswerIndex = 1;
-        }
     }
 
     private void CompleteLevel(int completedLevel)
@@ -353,7 +413,6 @@ public class ProgressUIController : MonoBehaviour
     {
         if (!lessonPopupLayer.activeSelf ||
             lessonAnswered ||
-            activeLessonLevel != 1 ||
             answerIndex < 0 ||
             answerIndex >= answerButtons.Length)
         {
@@ -412,8 +471,10 @@ public class ProgressUIController : MonoBehaviour
 
         feedbackText.color = new Color32(25, 130, 65, 255);
         feedbackText.text = unlocksNextLevel
-            ? "¡Correcto! Has desbloqueado el nivel 2."
-            : "¡Correcto! Completaste el repaso.";
+            ? "¡Correcto! Has desbloqueado el nivel "
+                + (activeLessonLevel + 1)
+                + "."
+            : "¡Correcto! Nivel completado.";
     }
 
     private void ResetAnswerButtonColors()

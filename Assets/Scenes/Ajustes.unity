@@ -7554,6 +7554,7 @@ MonoBehaviour:
   resetAccountPopupLayer: {fileID: 1441899104}
   confirmResetButton: {fileID: 1992901898}
   resetStatusText: {fileID: 1427326941}
+  usuarioText: {fileID: 1121806002}
   changePasswordPopupLayer: {fileID: 1492199377}
   currentPasswordInput: {fileID: 400188710}
   newPasswordInput: {fileID: 858347066}

@@ -20,6 +20,9 @@ public class SettingsUIController : MonoBehaviour
     [SerializeField]
     private TMP_Text resetStatusText;
 
+    [Header("Datos del usuario")]
+    [SerializeField] private TMP_Text usuarioText;
+
     [Header("Cambio de contraseña")]
     [SerializeField] private GameObject changePasswordPopupLayer;
     [SerializeField] private TMP_InputField currentPasswordInput;
@@ -31,6 +34,11 @@ public class SettingsUIController : MonoBehaviour
     private void Start()
     {
         resetAccountPopupLayer.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        UpdateUsernameText();
     }
 
     public void OpenPointsPopup()
@@ -310,5 +318,24 @@ public class SettingsUIController : MonoBehaviour
         }
 
         SceneManager.LoadScene("Autenticacion");
+    }
+
+    private void UpdateUsernameText()
+    {
+        bool hasSession =
+            !string.IsNullOrEmpty(
+                PlayerPrefs.GetString("AuthToken", "")
+            );
+
+        string username =
+            PlayerPrefs.GetString(
+                "CurrentUsername",
+                ""
+            );
+
+        usuarioText.text =
+            hasSession && !string.IsNullOrEmpty(username)
+                ? username
+                : "Usuario";
     }
 }
